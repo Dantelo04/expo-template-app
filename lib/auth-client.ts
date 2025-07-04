@@ -10,5 +10,5 @@ export const authClient = createAuthClient({
             storagePrefix: "expotemplateapp",
             storage: SecureStore,
         })
-    ]
+    ],
 });

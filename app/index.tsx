@@ -1,25 +1,18 @@
 import { StyleSheet } from 'react-native'
-import React, { useEffect } from 'react'
-import { Link, router } from 'expo-router'
+import React from 'react'
+import { Link, Redirect } from 'expo-router'
 import { View, Text } from '@/components/Themed'
-import { authClient } from '@/lib/auth-client'
 import Loader from '@/components/Loader'
+import { useSession } from '@/components/SessionProvider'
 
 const Index = () => {
-  const { data: session, isPending } = authClient.useSession();
+  const { session, isLoading } = useSession();
 
-  useEffect(() => {
-    if (session) {
-      router.push("/one");
-    }
-  }, [session]);
+  if (session) return <Redirect href="/one" />;
 
-  if (isPending) return <Loader />;
-
-  if (session) return <Loader />;
-  
   return (
     <View style={styles.container}>
+      {isLoading && <Loader />}
       <Text style={styles.title}>Initial Screen</Text>
       <Link href="/sign-in">
         <Text style={styles.button}>Go to Sign In</Text>

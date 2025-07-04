@@ -1,48 +1,24 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
-import { authClient } from "@/lib/auth-client";
-import { Link, router } from "expo-router";
+import React, { useState } from "react";
+import { Link } from "expo-router";
 import { View, Text, TextInput } from "@/components/Themed";
-import Loader from "@/components/Loader";
+import { useSession } from "@/components/SessionProvider";
 
 const SignIn = () => {
-  const { data: session, isPending } = authClient.useSession();
-
-  useEffect(() => {
-    if (session) {
-      router.replace("/one");
-    }
-  }, [session]);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const { signIn, isLoading: isLoadingSession, refreshSession } = useSession();
 
   const handleLogin = async () => {
-    setIsLoading(true);
-    setError("");
-    await authClient.signIn.email({
-      email,
-      password,
-    }, {
-      onSuccess: () => {
-        router.push("/one");
-      },
-      onError: (error) => {
-        console.log(error);
-        setError(error.error.message);
-      },
-    });
-    setIsLoading(false);
+    await signIn(email, password);
+    await refreshSession();
   };
-
-  if (isPending) return <Loader />;
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign In</Text>
-      {error && <Text style={styles.error}>{error}</Text>}
+      {error ? <Text style={styles.error}>{error}</Text> : null}
       <TextInput
         placeholder="Email"
         value={email}
@@ -54,8 +30,8 @@ const SignIn = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={isLoading}>
-        <Text>{isLoading ? "Loading..." : "Sign In"}</Text>
+      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={isLoadingSession}>
+        <Text>{isLoadingSession ? "Loading..." : "Sign In"}</Text>
       </TouchableOpacity>
       <Link href="/sign-up">
         <Text style={styles.link}>Don't have an account? Sign up</Text>

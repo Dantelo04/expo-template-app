@@ -1,29 +1,22 @@
-import { StyleSheet } from 'react-native';
-import { Text, View } from '@/components/Themed';
-import { authClient } from '@/lib/auth-client';
-import { Link, router } from 'expo-router';
-import { useEffect } from 'react';
-import Loader from '@/components/Loader';
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View } from "@/components/Themed";
+import { authClient } from "@/lib/auth-client";
+import { router } from "expo-router";
+import { useSession } from "@/components/SessionProvider";
 
 export default function TabOneScreen() {
-  const { data: session, isPending } = authClient.useSession();
-
-  useEffect(() => {
-    if (!session) {
-      router.push("/");
-    }
-  }, [session]);
-
-  if (isPending) return <Loader />;
-  if (!session) return <Loader />;
+  const { signOut } = useSession();
+  
+  const handleSignOut = async () => {
+    await signOut();
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <Link href="/sign-out">
-        <Text style={styles.link}>Sign Out</Text>
-      </Link>
+      <TouchableOpacity style={styles.button} onPress={handleSignOut}>
+        <Text>Sign Out</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -31,21 +24,26 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
   link: {
     color: "blue",
     textDecorationLine: "underline",
     fontSize: 16,
+  },
+  button: {
+    backgroundColor: "blue",
+    padding: 10,
+    borderRadius: 5,
   },
 });

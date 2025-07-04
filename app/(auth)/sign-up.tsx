@@ -4,33 +4,50 @@ import { authClient } from "@/lib/auth-client";
 import { Link, router } from "expo-router";
 import { View, Text, TextInput } from "@/components/Themed";
 import Loader from "@/components/Loader";
+import { useSession } from "@/components/SessionProvider";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const { data: session, isPending } = authClient.useSession();
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { refreshSession } = useSession();
 
   const handleSignUp = async () => {
-    await authClient.signUp.email(
-      {
-        email,
-        password,
-        name: name,
-      },
-      {
-        onSuccess: () => {
-          router.push("/one");
+    setIsLoading(true);
+    setError("");
+    try {
+      await authClient.signUp.email(
+        {
+          email,
+          password,
+          name: name,
         },
-      }
-    );
+        {
+          onSuccess: async () => {
+            await refreshSession();
+            router.push("/(tabs)/one");
+          },
+          onError: (error) => {
+            console.log("error", error);
+            setError(error.error.message);
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Sign up error:", error);
+      setError("An unexpected error occurred");
+    } finally {
+      setIsLoading(false);
+    }
   };
-
-  if (isPending) return <Loader />;
 
   return (
     <View style={styles.container}>
+      {isLoading && <Loader />}
       <Text style={styles.title}>Sign Up</Text>
+      {error ? <Text style={styles.error}>{error}</Text> : null}
       <TextInput placeholder="Name" value={name} onChangeText={setName} />
       <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
       <TextInput
@@ -39,8 +56,8 @@ const SignUp = () => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-        <Text>Sign Up</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSignUp} disabled={isLoading}>
+        <Text>{isLoading ? "Loading..." : "Sign Up"}</Text>
       </TouchableOpacity>
       <Link href="/sign-in">
         <Text style={styles.link}>Already have an account? Sign in</Text>
@@ -68,6 +85,10 @@ const styles = StyleSheet.create({
   link: {
     color: "blue",
     textDecorationLine: "underline",
+    fontSize: 16,
+  },
+  error: {
+    color: "red",
     fontSize: 16,
   },
 });
