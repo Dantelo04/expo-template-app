@@ -1,10 +1,10 @@
 import { SplashScreen } from 'expo-router';
-import { authClient } from '@/lib/auth-client';
+import { useSession } from '@/components/SessionProvider';
 
 export default function SplashScreenController() {
-  const { data: session, isPending } = authClient.useSession();
+  const { session, isLoading } = useSession();
 
-  if (!isPending && session) {
+  if (!isLoading && session) {
     SplashScreen.hideAsync();
   }
 
