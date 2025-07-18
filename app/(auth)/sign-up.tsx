@@ -1,10 +1,9 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Link, router } from "expo-router";
-import { View, Text, TextInput } from "@/components/Themed";
 import Loader from "@/components/Loader";
-import { useSession } from "@/components/SessionProvider";
+import { useSession } from "@/context/SessionProvider";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");

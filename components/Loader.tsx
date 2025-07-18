@@ -1,6 +1,5 @@
 import React from 'react'
-import { View, Text } from './Themed'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 
 const Loader = () => {
   return (

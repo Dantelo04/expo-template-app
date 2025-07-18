@@ -4,7 +4,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-import { SessionProvider, useSession } from "@/components/SessionProvider";
+import { SessionProvider, useSession } from "@/context/SessionProvider";
 import SplashScreenController from "./splash";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { StatusBar } from "expo-status-bar";

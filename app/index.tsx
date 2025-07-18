@@ -1,8 +1,7 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { Link, Redirect } from 'expo-router'
-import { View, Text } from '@/components/Themed'
-import { useSession } from '@/components/SessionProvider'
+import { useSession } from '@/context/SessionProvider'
 
 const Index = () => {
   const { session } = useSession();
