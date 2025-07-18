@@ -1,8 +1,6 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { Text, View } from "@/components/Themed";
-import { authClient } from "@/lib/auth-client";
-import { router } from "expo-router";
-import { useSession } from "@/components/SessionProvider";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useSession } from "@/context/SessionProvider";
+
 
 export default function TabOneScreen() {
   const { signOut } = useSession();

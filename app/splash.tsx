@@ -1,5 +1,5 @@
 import { SplashScreen } from 'expo-router';
-import { useSession } from '@/components/SessionProvider';
+import { useSession } from '@/context/SessionProvider';
 
 export default function SplashScreenController() {
   const { session, isLoading } = useSession();
