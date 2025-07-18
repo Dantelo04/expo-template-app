@@ -7,6 +7,8 @@ import "react-native-reanimated";
 import { SessionProvider, useSession } from "@/components/SessionProvider";
 import SplashScreenController from "./splash";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { StatusBar } from "expo-status-bar";
+
 
 export { ErrorBoundary } from "expo-router";
 
@@ -45,9 +47,10 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const { session } = useSession();
-
+  
   return (
     <ThemeProvider>
+      <StatusBar style="auto" />
       <Stack
         screenOptions={{
           headerShown: false,
