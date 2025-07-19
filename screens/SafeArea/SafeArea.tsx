@@ -4,5 +4,5 @@ import { useTheme } from '@/context/ThemeContext';
 
 export default function SafeArea({ children }: { children: React.ReactNode }) {
   const theme = useTheme();
-  return <SafeAreaView style={{ height: '100%', backgroundColor: theme.theme.colors.background.primary }} >{children}</SafeAreaView>;
+  return <SafeAreaView style={{ height: '100%', backgroundColor: theme.theme.colors.background.primary }}>{children}</SafeAreaView>;
 }
