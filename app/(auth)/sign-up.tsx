@@ -2,7 +2,6 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-nativ
 import React, { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Link, router } from "expo-router";
-import Loader from "@/components/Loader";
 import { useSession } from "@/context/SessionProvider";
 
 const SignUp = () => {
@@ -44,7 +43,6 @@ const SignUp = () => {
 
   return (
     <View style={styles.container}>
-      {isLoading && <Loader />}
       <Text style={styles.title}>Sign Up</Text>
       {error ? <Text style={styles.error}>{error}</Text> : null}
       <TextInput placeholder="Name" value={name} onChangeText={setName} />
