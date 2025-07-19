@@ -8,13 +8,18 @@ export const textStyles = (theme: Theme) => StyleSheet.create({
     fontWeight: theme.typography.fontWeight.regular as any,
   },
   title: {
-    fontSize: theme.typography.fontSize.lg,
+    fontSize: theme.typography.fontSize['3xl'],
     color: theme.colors.text.primary,
     fontWeight: theme.typography.fontWeight.bold as any,
   },
   subtitle: {
     fontSize: theme.typography.fontSize.base,
     color: theme.colors.text.secondary,
+    fontWeight: theme.typography.fontWeight.medium as any,
+  },
+  button: {
+    fontSize: theme.typography.fontSize.base,
+    color: theme.colors.text.primary,
     fontWeight: theme.typography.fontWeight.medium as any,
   },
 });
