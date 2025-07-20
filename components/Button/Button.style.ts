@@ -5,6 +5,8 @@ export const buttonStyles = (theme: Theme) => StyleSheet.create({
   button: {
     padding: 10,
     borderRadius: 5,
+    width: '100%',
+    maxWidth: 300,
   },
   primary: {
     backgroundColor: theme.colors.primary[500],
