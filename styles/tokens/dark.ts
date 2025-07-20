@@ -27,5 +27,9 @@ export const darkTheme = {
         warning: '#fbbf24',
         error: '#f87171',
       },
+      basic: {
+        white: '#ffffff',
+        black: '#000000',
+      }
     },
   };

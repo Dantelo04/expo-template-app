@@ -27,5 +27,9 @@ export const lightTheme = {
         warning: '#f59e0b',
         error: '#ef4444',
       },
+      basic: {
+        white: '#ffffff',
+        black: '#000000',
+      }
     },
   };

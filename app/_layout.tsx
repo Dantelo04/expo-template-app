@@ -19,8 +19,9 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 SplashScreen.setOptions({
-  duration: 500,
+  duration: 1250,
   fade: true,
+  
 });
 
 export default function RootLayout() {

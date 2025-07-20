@@ -14,12 +14,13 @@ export const textStyles = (theme: Theme) => StyleSheet.create({
   },
   subtitle: {
     fontSize: theme.typography.fontSize.base,
+    color: theme.colors.text.secondary,
     fontWeight: theme.typography.fontWeight.medium as any,
   },
   button: {
     fontSize: theme.typography.fontSize.base,
     textAlign: 'center',
-    color: theme.colors.text.inverse,
+    color: theme.colors.basic.white,
     fontWeight: theme.typography.fontWeight.medium as any,
   },
   error: {
