@@ -2,7 +2,7 @@ import { Text as RNText } from 'react-native'
 import React from 'react'
 import { TextProps as RNTextProps } from 'react-native'
 import { useTheme } from '@/context/ThemeContext';
-import { textStyles } from './Text.style';
+import textStyles from './Text.style';
 
 interface TextProps extends RNTextProps {
   variant?: 'text' | 'title' | 'subtitle' | 'button' | 'error';

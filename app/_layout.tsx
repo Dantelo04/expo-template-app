@@ -19,9 +19,9 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 SplashScreen.setOptions({
-  duration: 1250,
+  duration: 500,
   fade: true,
-  
+
 });
 
 export default function RootLayout() {
@@ -55,6 +55,7 @@ function RootLayoutNav() {
       <Stack
         screenOptions={{
           headerShown: false,
+          animation: 'none'
         }}
       >
         <Stack.Protected guard={!session}>

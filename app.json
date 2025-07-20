@@ -8,11 +8,6 @@
     "scheme": "expotemplateapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "splash": {
-      "image": "./assets/images/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.expo-template-app"
@@ -34,13 +29,24 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#232323",
+          "backgroundColor": "#ffffff",
           "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
           "dark": {
-            "image": "./assets/images/adaptive-icon.png",
-            "backgroundColor": "#000000"
+            "image": "./assets/images/splash-icon-dark.png",
+            "backgroundColor": "#111827"
           },
-          "imageWidth": 200
+          "android": {
+            "image": "./assets/images/splash-android.png",
+            "imageWidth": 250,
+            "resizeMode": "cover"
+          },
+          "ios": {
+            "image": "./assets/images/splash-ios.png",
+            "imageWidth": 180,
+            "resizeMode": "contain"
+          }
         }
       ]
     ],

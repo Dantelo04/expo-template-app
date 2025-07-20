@@ -1,7 +1,7 @@
 import { Theme } from "@/styles/theme";
 import { StyleSheet } from "react-native";
 
-export const textStyles = (theme: Theme) => StyleSheet.create({
+const textStyles = (theme: Theme) => StyleSheet.create({
   text: {
     fontSize: theme.typography.fontSize.base,
     color: theme.colors.text.primary,
@@ -29,3 +29,5 @@ export const textStyles = (theme: Theme) => StyleSheet.create({
     fontWeight: theme.typography.fontWeight.medium as any,
   },
 });
+
+export default textStyles;
