@@ -5,7 +5,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { textStyles } from './Text.style';
 
 interface TextProps extends RNTextProps {
-  variant?: 'text' | 'title' | 'subtitle' | 'button';
+  variant?: 'text' | 'title' | 'subtitle' | 'button' | 'error';
 }
 
 export const Text = ({ children, style, variant = 'text', ...props }: TextProps) => {
@@ -13,7 +13,7 @@ export const Text = ({ children, style, variant = 'text', ...props }: TextProps)
   const styles = textStyles(theme);
 
   return (
-    <RNText style={[style, styles[variant]]} {...props}>
+    <RNText style={[styles[variant], style]} {...props}>
       {children}
     </RNText>
   )

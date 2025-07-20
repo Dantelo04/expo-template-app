@@ -1,69 +1,9 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
-import { Link } from "expo-router";
-import { useSession } from "@/context/SessionProvider";
+import { SignIn as SignInScreen } from "@/screens/SignIn/SignIn";
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const { signIn, isLoading: isLoadingSession, refreshSession } = useSession();
-
-  const handleLogin = async () => {
-    await signIn(email, password);
-    await refreshSession();
-  };
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sign In</Text>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={isLoadingSession}>
-        <Text>{isLoadingSession ? "Loading..." : "Sign In"}</Text>
-      </TouchableOpacity>
-      <Link href="/sign-up">
-        <Text style={styles.link}>Don't have an account? Sign up</Text>
-      </Link>
-    </View>
+    <SignInScreen />
   );
 };
 
 export default SignIn;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  button: {
-    backgroundColor: "blue",
-    padding: 10,
-    borderRadius: 5,
-  },
-  link: {
-    color: "blue",
-    textDecorationLine: "underline",
-    fontSize: 16,
-  },
-  error: {
-    color: "red",
-    fontSize: 16,
-  },
-});
