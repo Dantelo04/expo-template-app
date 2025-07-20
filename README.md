@@ -28,7 +28,7 @@ This project requires environment variables to be configured. Create a `.env` fi
 DB_URL=postgresql://username:password@localhost:5432/your_database_name
 
 # Better Auth server URL (for client-side authentication)
-EXPO_PUBLIC_BETTER_AUTH_URL=http://localhost:8081
+EXPO_PUBLIC_BETTER_AUTH_URL=http://192.168.1.100:8081
 ```
 
 ### Environment Variables Explained
@@ -38,9 +38,10 @@ EXPO_PUBLIC_BETTER_AUTH_URL=http://localhost:8081
   - Example: `postgresql://myuser:mypassword@localhost:5432/auth_db`
 
 - **`EXPO_PUBLIC_BETTER_AUTH_URL`**: URL where your Better Auth server is running
-  - For local development: `http://localhost:8081`
+  - For local development: Use your computer's IP address (e.g., `http://192.168.1.100:8081`)
   - For production: Your deployed server URL
   - Note: This variable must be prefixed with `EXPO_PUBLIC_` to be accessible in the client
+  - **Important**: Use your computer's IP address, not localhost, when testing on physical devices
 
 ## Installation
 
@@ -59,6 +60,7 @@ EXPO_PUBLIC_BETTER_AUTH_URL=http://localhost:8081
    ```bash
    cp .env.example .env
    # Edit .env with your actual values
+   # Note: Use your computer's IP address for EXPO_PUBLIC_BETTER_AUTH_URL
    ```
 
 4. **Set up the database**
@@ -186,6 +188,7 @@ npm run test:watch
    - Verify `EXPO_PUBLIC_BETTER_AUTH_URL` is correct
    - Check that the Better Auth server is running
    - Ensure database migrations have been applied
+   - **Important**: Use your computer's IP address, not localhost, for the Better Auth URL when testing on physical devices
 
 ## Contributing
 
