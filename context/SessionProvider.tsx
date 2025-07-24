@@ -1,4 +1,4 @@
-import React, {
+  import React, {
   createContext,
   useContext,
   useEffect,
@@ -18,6 +18,7 @@ interface SessionContextType {
   isAuthenticated: boolean;
   error: string | null;
   signIn: (email: string, password: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   refreshSession: () => Promise<void>;
@@ -110,6 +111,24 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({ children }) =>
       setIsLoading(false);
     }
   };
+
+  const signInWithGoogle = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      await authClient.signIn.social(
+        { 
+          provider: "google",
+          callbackURL: "expotemplateapp://one"
+        },
+      );
+    } catch (err) {
+      setError("Unexpected error during sign-in with Google");
+    } finally {
+      setIsLoading(false);
+      refreshSession();
+    }
+  };
   
 
   const signUp = async (email: string, password: string) => {
@@ -161,6 +180,7 @@ export const SessionProvider: React.FC<SessionProviderProps> = ({ children }) =>
     isAuthenticated: !!session,
     error,
     signIn,
+    signInWithGoogle,
     signUp,
     signOut,
     refreshSession,
