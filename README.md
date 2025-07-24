@@ -10,7 +10,7 @@ A modern React Native application built with Expo Router and Better Auth for aut
 - 🎨 **Modern UI** - Customizable theme system with dark/light mode
 - 🔧 **TypeScript** - Full type safety
 - 📦 **Component Library** - Reusable UI components
-- 🌐 **ngrok Integration** - Secure tunneling for development and testing
+- 🌐 **External Backend** - Authentication handled by external Better Auth server
 
 ## Prerequisites
 
@@ -19,104 +19,22 @@ Before running this project, make sure you have the following installed:
 - [Node.js](https://nodejs.org/) (v18 or higher)
 - [Expo CLI](https://docs.expo.dev/get-started/installation/)
 - [Git](https://git-scm.com/)
-- [ngrok](https://ngrok.com/) (for secure tunneling)
-- [PostgreSQL](https://www.postgresql.org/) (for database)
 
 ## Environment Setup
 
 This project requires environment variables to be configured. Create a `.env` file in the root directory with the following variables:
 
 ```env
-# Database connection string (PostgreSQL)
-DB_URL=postgresql://username:password@localhost:5432/your_database_name
-
 # Better Auth server URL (for client-side authentication)
-# Use ngrok URL for development and testing
-EXPO_PUBLIC_BETTER_AUTH_URL=https://your-ngrok-url.ngrok.io
-
-# Google OAuth Configuration
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
+EXPO_PUBLIC_BETTER_AUTH_URL=https://your-backend-url.com
 ```
 
 ### Environment Variables Explained
 
-- **`DB_URL`**: PostgreSQL connection string for the Better Auth database
-  - Format: `postgresql://username:password@host:port/database_name`
-  - Example: `postgresql://myuser:mypassword@localhost:5432/auth_db`
-
-- **`EXPO_PUBLIC_BETTER_AUTH_URL`**: URL where your Better Auth server is running
-  - For development: Use ngrok URL (e.g., `https://abc123.ngrok.io`)
+- **`EXPO_PUBLIC_BETTER_AUTH_URL`**: URL where your external Better Auth server is running
+  - For development: Your local or deployed backend URL
   - For production: Your deployed server URL
   - Note: This variable must be prefixed with `EXPO_PUBLIC_` to be accessible in the client
-  - **Important**: Use ngrok URL for secure tunneling when testing on physical devices
-
-- **`GOOGLE_CLIENT_ID`**: Google OAuth client ID from Google Cloud Console
-  - Required for Google login functionality
-  - Get this from [Google Cloud Console](https://console.cloud.google.com/)
-
-- **`GOOGLE_CLIENT_SECRET`**: Google OAuth client secret from Google Cloud Console
-  - Required for Google login functionality
-  - Get this from [Google Cloud Console](https://console.cloud.google.com/)
-
-## Google OAuth Setup
-
-### 1. Create Google Cloud Project
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select an existing one
-3. Enable the Google+ API and Google OAuth2 API
-
-### 2. Configure OAuth Consent Screen
-
-1. Navigate to "APIs & Services" > "OAuth consent screen"
-2. Choose "External" user type
-3. Fill in the required information:
-   - App name
-   - User support email
-   - Developer contact information
-4. Add scopes: `email`, `profile`, `openid`
-5. Add test users if needed
-
-### 3. Create OAuth 2.0 Credentials
-
-1. Go to "APIs & Services" > "Credentials"
-2. Click "Create Credentials" > "OAuth 2.0 Client IDs"
-3. Choose "Web application"
-4. Add authorized redirect URIs:
-   - `https://your-ngrok-url.ngrok.io/auth/callback/google`
-   - `expotemplateapp://one` (for mobile app)
-5. Copy the Client ID and Client Secret to your `.env` file
-
-## ngrok Setup
-
-### 1. Install ngrok
-
-```bash
-# Using npm
-npm install -g ngrok
-
-# Or download from https://ngrok.com/
-```
-
-### 2. Start ngrok Tunnel
-
-```bash
-# Start ngrok on port 8081 (or your Better Auth server port)
-ngrok http 8081
-```
-
-### 3. Update Environment Variables
-
-1. Copy the ngrok URL (e.g., `https://abc123.ngrok.io`)
-2. Update `EXPO_PUBLIC_BETTER_AUTH_URL` in your `.env` file
-3. Update the Google OAuth redirect URI in Google Cloud Console
-
-### 4. Update Google OAuth Redirect URIs
-
-In your Google Cloud Console OAuth 2.0 credentials:
-1. Add the new ngrok URL: `https://your-ngrok-url.ngrok.io/auth/callback/google`
-2. Keep the existing mobile redirect: `expotemplateapp://one`
 
 ## Installation
 
@@ -134,23 +52,8 @@ In your Google Cloud Console OAuth 2.0 credentials:
 3. **Set up your environment variables**
    ```bash
    cp .env.example .env
-   # Edit .env with your actual values
-   # Note: Use ngrok URL for EXPO_PUBLIC_BETTER_AUTH_URL
+   # Edit .env with your actual backend URL
    ```
-
-4. **Set up the database**
-   - Ensure PostgreSQL is running
-   - Create a database for the application
-   - Update the `DB_URL` in your `.env` file
-
-5. **Start ngrok tunnel**
-   ```bash
-   ngrok http 8081
-   ```
-
-6. **Update Google OAuth redirect URIs**
-   - Add your ngrok URL to Google Cloud Console
-   - Update `EXPO_PUBLIC_BETTER_AUTH_URL` in `.env`
 
 ## Running the Application
 
@@ -188,8 +91,9 @@ expo-template-app/
 │   └── api/               # API routes
 ├── components/            # Reusable UI components
 ├── context/              # React Context providers
+│   ├── SessionProvider.tsx # Authentication state management
+│   └── ThemeContext.tsx   # Theme state management
 ├── lib/                  # Utility libraries
-│   ├── auth.ts           # Better Auth server configuration
 │   ├── auth-client.ts    # Better Auth client configuration
 │   └── config/           # Configuration files
 ├── screens/              # Screen components
@@ -205,14 +109,44 @@ This project uses Better Auth for authentication with the following features:
 - Secure token storage using Expo SecureStore
 - Cross-platform authentication flow
 - Protected routes
+- External backend integration
+
+### Authentication Context
+
+The app uses a `SessionProvider` context (`context/SessionProvider.tsx`) that provides:
+
+- **Session Management**: Handles user session state and authentication status
+- **Authentication Methods**: 
+  - `signIn(email, password)` - Email/password authentication
+  - `signInWithGoogle()` - Google OAuth authentication
+  - `signUp(email, password)` - User registration
+  - `signOut()` - User logout
+- **State Management**: 
+  - `session` - Current session data
+  - `user` - Current user data
+  - `isLoading` - Loading state
+  - `isAuthenticated` - Authentication status
+  - `error` - Error handling
+
+### Using the Authentication Context
+
+```typescript
+import { useSession, useUser, useAuth } from '@/context/SessionProvider';
+
+// In your component
+const { signIn, signOut, isAuthenticated, isLoading } = useSession();
+const user = useUser();
+const { isAuthenticated, isLoading } = useAuth();
+```
 
 ### Authentication Flow
 
 1. Users can sign up with email and password
 2. Users can sign in with existing credentials
 3. Users can sign in with Google OAuth
-4. Authentication state is managed globally
+4. Authentication state is managed globally through SessionProvider
 5. Protected routes automatically redirect to sign-in
+6. All authentication requests are handled by the external backend
 
 ### Google OAuth Flow
 
@@ -220,7 +154,7 @@ This project uses Better Auth for authentication with the following features:
 2. App opens Google OAuth flow
 3. User authenticates with Google
 4. Google redirects back to the app
-5. Better Auth handles the OAuth callback
+5. Better Auth client handles the OAuth callback
 6. User is signed in and redirected to the main app
 
 ## Customization
@@ -274,35 +208,20 @@ npm run test:watch
    - Restart the development server after adding environment variables
    - Check that `EXPO_PUBLIC_` prefix is used for client-side variables
 
-2. **Database connection issues**
-   - Verify PostgreSQL is running
-   - Check your `DB_URL` format
-   - Ensure the database exists and is accessible
+2. **Authentication not working**
+   - Verify `EXPO_PUBLIC_BETTER_AUTH_URL` is correct and points to your backend
+   - Check that the external Better Auth server is running and accessible
+   - Ensure the backend is properly configured with Google OAuth credentials
 
-3. **Authentication not working**
-   - Verify `EXPO_PUBLIC_BETTER_AUTH_URL` is correct
-   - Check that the Better Auth server is running
-   - Ensure database migrations have been applied
-   - **Important**: Use ngrok URL for secure tunneling when testing on physical devices
+3. **Google OAuth not working**
+   - Verify that your backend has `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` configured
+   - Check that Google OAuth redirect URIs are configured properly in Google Cloud Console
+   - Ensure the OAuth consent screen is configured correctly
 
-4. **Google OAuth not working**
-   - Verify `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are set correctly
-   - Check that Google OAuth redirect URIs are configured properly
-   - Ensure the ngrok URL is added to Google Cloud Console redirect URIs
-   - Verify the OAuth consent screen is configured correctly
-
-5. **ngrok connection issues**
-   - Ensure ngrok is running on the correct port
-   - Check that the ngrok URL is accessible
-   - Update both `.env` file and Google Cloud Console with the new ngrok URL
-   - Restart the development server after changing ngrok URL
-
-### ngrok Tips
-
-- ngrok URLs change each time you restart ngrok (unless you have a paid account)
-- Always update both your `.env` file and Google Cloud Console when ngrok URL changes
-- Use `ngrok http 8081 --host-header=localhost:8081` if you encounter host header issues
-- Consider using ngrok's reserved domains for consistent URLs (paid feature)
+4. **Session management issues**
+   - Check that the SessionProvider is wrapping your app correctly
+   - Verify that the auth client is properly configured
+   - Ensure SecureStore is working on your target platform
 
 ## Contributing
 
