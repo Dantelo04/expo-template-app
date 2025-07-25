@@ -161,7 +161,7 @@ const { isAuthenticated, isLoading } = useAuth();
 
 ### Theme
 
-The app includes a customizable theme system located in `styles/theme/` and `styles/tokens/`. You can modify colors, typography, and other design tokens.
+The app includes a customizable theme system located in `styles/theme/` and `styles/tokens/`. You can modify colors, typography, and other design tokens following the structure.
 
 ### Components
 
